@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Model weights & caches
+models/weights/*.safetensors
+models/weights/*.ckpt
+models/weights/*.onnx
+.cache/
+*.pkl
+*.npz
+
+# Generated output
+outputs/
+runs/
+*.pixel.png
+*.sheet.png
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Env
+.env
+.env.local
