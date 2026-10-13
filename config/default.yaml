@@ -1,0 +1,46 @@
+# pixel-art-ai-generator default pipeline config
+# Every job is a pipeline: ingest -> processor chain -> output driver.
+
+pipeline:
+  name: default
+  workers: 2
+  queue_max: 32
+
+ingest:
+  prompt_handler:
+    enabled: true
+    max_tokens: 77
+    negative_prompt: "blurry, anti-aliased, smooth gradients, 3d render"
+  reference_handler:
+    enabled: true
+    max_size: 512
+    accept_formats: [".png", ".bmp", ".gif", ".webp"]
+
+processors:
+  - id: diffusion_sampler
+    model: models/weights/pixel-diffusion-v2.safetensors
+    steps: 28
+    guidance: 7.5
+    scheduler: dpmpp_2m
+  - id: palette_quantizer
+    palette: config/palettes/db16.yaml
+    dither: bayer4
+    strength: 0.85
+  - id: pixel_snap
+    target_res: [32, 32]
+    snap_mode: nearest
+  - id: outline_pass
+    enabled: true
+    color: "#1a1410"
+    thickness: 1
+
+output:
+  driver: sheet
+  sheet_columns: 8
+  tile_pad: 1
+  png_optimize: true
+  metadata_sidecar: true
+
+device: cuda
+seed: -1
+log_level: INFO
